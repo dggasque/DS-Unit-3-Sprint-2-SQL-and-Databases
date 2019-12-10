@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+module1-introduction-to-sql/toy_data.db
+module1-introduction-to-sql/sqlite3_class_notes.ipynb
+module1-introduction-to-sql/Untitled.ipynb
+module2-sql-for-analysis/insert_titanic.ipynb
+module2-sql-for-analysis/lecture_notes.ipynb
+module2-sql-for-analysis/rpg_db.sqlite3
