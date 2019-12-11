@@ -41,7 +41,24 @@ There is no other required tasks to turn in, but it is suggested to then revisit
 the first two modules, rework/complete things as needed, and just check out with
 fresh eyes the SQL approach. Compare and contrast, and come with questions
 tomorrow - the main topic will be database differences and tradeoffs!
-
+```python
+"""
+It was more difficult to succesfully establish a connection to the MongoDB, but much easier to maintain the connection as mistakes did not break it. It is easier to conceptualize the PostgreSQL database, because of the relational connections between tables. I am already familiar with SQL queries, so interacting with the data is much easier.  
+"""
+for character in characters:
+    doc = {
+        'sql_id': character[0],
+        'name' : character[1],
+        'level' : character[2],
+        'exp' : character[3],
+        'hp' : character[4],
+        'strength': character[5],
+        'intelligence' : character[6],
+        'dexterity' : character[7],
+        'wisdom' : character [8]
+    }
+    db.test.insert_one(doc)
+```
 ## Resources and Stretch Goals
 
 Put Titanic data in Big Data! That is, try to load `titanic.csv` from yesterday
