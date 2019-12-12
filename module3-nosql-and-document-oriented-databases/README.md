@@ -48,10 +48,14 @@ It was more difficult to succesfully establish a connection to the MongoDB, but 
 import pymongo
 import sqlite3
 
-client = pymongo.MongoClient("mongodb+srv://,username>:<password>@cluster0-6pbrr.mongodb.net/test?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://<username>:<password>@cluster0-6pbrr.mongodb.net/test?retryWrites=true&w=majority")
 db = client.test
 
-def write_to_mongo(tables,cursor, mongodb):
+def write_to_mongo(tables, cursor, mongodb):
+    """
+    Takes tables from sglite3 database and writes the data
+    in the tables to Mongodb 
+    """
     tables = get_names(tables)
     for table in tables:
         columns = get_columns(cursor, table)
@@ -64,12 +68,19 @@ def write_to_mongo(tables,cursor, mongodb):
 
 
 def get_names(tables):
+    """
+    Pulls table names from Tuples in the tables list
+    """
     table_names = []
     for table in tables:
         table_names.append(table[0])
     return table_names
 
-def get_columns(cursor, table):
+def get_columns(cursor, table_names):
+    """ 
+    Takes table names and returns list of columns
+    in the table
+    """
     table_info = curs.execute(f'PRAGMA table_info({table});').fetchall()
     columns = []
     for info in table_info:
@@ -77,6 +88,9 @@ def get_columns(cursor, table):
     return columns
 
 def get_table_data(cursor, table):
+    """
+    Returns row data for table
+    """
     return curs.execute(f'SELECT * FROM {table}').fetchall()
 
 conn = sqlite3.connect('rpg_db.sqlite3')
