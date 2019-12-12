@@ -45,19 +45,44 @@ tomorrow - the main topic will be database differences and tradeoffs!
 """
 It was more difficult to succesfully establish a connection to the MongoDB, but much easier to maintain the connection as mistakes did not break it. It is easier to conceptualize the PostgreSQL database, because of the relational connections between tables. I am already familiar with SQL queries, so interacting with the data is much easier.  
 """
-for character in characters:
-    doc = {
-        'sql_id': character[0],
-        'name' : character[1],
-        'level' : character[2],
-        'exp' : character[3],
-        'hp' : character[4],
-        'strength': character[5],
-        'intelligence' : character[6],
-        'dexterity' : character[7],
-        'wisdom' : character [8]
-    }
-    db.test.insert_one(doc)
+import pymongo
+import sqlite3
+
+client = pymongo.MongoClient("mongodb+srv://,username>:<password>@cluster0-6pbrr.mongodb.net/test?retryWrites=true&w=majority")
+db = client.test
+
+def write_to_mongo(tables,cursor, mongodb):
+    tables = get_names(tables)
+    for table in tables:
+        columns = get_columns(cursor, table)
+        data = get_table_data(cursor, table)
+        for row in data:
+            doc = {}
+            for i in range(len(row)):
+                doc.update({columns[i]: row[i]})
+            mongodb.test.insert_one(doc)
+
+
+def get_names(tables):
+    table_names = []
+    for table in tables:
+        table_names.append(table[0])
+    return table_names
+
+def get_columns(cursor, table):
+    table_info = curs.execute(f'PRAGMA table_info({table});').fetchall()
+    columns = []
+    for info in table_info:
+        columns.append(info[1])
+    return columns
+
+def get_table_data(cursor, table):
+    return curs.execute(f'SELECT * FROM {table}').fetchall()
+
+conn = sqlite3.connect('rpg_db.sqlite3')
+curs = conn.cursor()
+
+write_to_mongo(tables, curs, db)
 ```
 ## Resources and Stretch Goals
 
